@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+{% load static %}
+
+<head>
+	<meta charset="UTF-8">
+    <title>Employee Records</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="{% static 'records/style.css' %}" />
+
+
+</head>
+<body>
+ <script>
+        $( function() {
+            var availableTags = [
+                {% for item in records %}
+                    "{{item.City}}",
+                {% endfor %}
+            ];
+            $( "#id_City" ).autocomplete({
+              source: availableTags
+            });
+        } );
+
+
+</script>
+<!--<script>
+	$(document).ready(function () {
+        $('#table1').hide()
+        $('#Search-btn').click(function () {
+            $("#table1").show();
+        });
+});
+</script>-->
+
+	<div class="container-fluid">
+		<div class="row main-content bg-success text-center">
+			<div class="col-md-4 text-center company__info">
+				<span class="company__logo"><h2><span class="fa fa-android"></span></h2></span>
+				<img  id="cart-icon" src="{% static 'images/employee.png' %}">
+				<h4 class="company_title">Hannovit Tech Pvt Ltd</h4>
+			</div>
+			<div class="col-md-8 col-xs-12 col-sm-12 login_form ">
+				<div class="container-fluid">
+					<div class="row">
+						<h2>Employee Records</h2>
+					</div>
+					<form method="POST" class="post-form" >
+    				{% csrf_token %}
+						<div class="row">
+							<form control="" class="form-group">
+							<div class="row">
+								<input type="text" name="Name" maxlength="200" required="" id="id_Name" class="form__input" placeholder="Employee Name">
+
+							</div>
+							<div class="row">
+								<input type="text" name="PAN_number" maxlength="10" required="" id="id_PAN_number" class="form__input" placeholder="Employee PAN number">
+							</div>
+
+							<div class="row">
+								<input type="number" name="Age" min="0" required="" id="id_Age" class="form__input" placeholder="Employee Age">
+							</div>
+							<label for="id_Gender" maxlength="100" >Choose a Gender:</label>
+							<div class="row">
+
+								<select name="Gender" maxlength="100" required="" id="id_Gender"  class="form__input" >
+								{% for record in records  %}
+								   <option  value="{{record.Gender}}"
+									   selected="selected">
+									   {{record.Gender}}
+								   </option>
+								{% endfor %}
+								</select>
+
+							</div>
+
+							<div class="row">
+								<input type="email" name="Email" maxlength="254" required="" id="id_Email" class="form__input" placeholder="Employee Email">
+							</div>
+
+							<div class="row">
+								<input type="text" name="City" maxlength="100" required="" id="id_City" class="form__input" placeholder="Employee City">
+							</div>
+
+							<div class="row">
+								<input type="submit" value="Add" class="btn">
+							</div>
+						</form>
+					</div>
+					</form>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+<div class="container-fluid">
+	<div class="row main-content bg-success text-center">
+		<div class="col-md-12 col-xs-12 col-sm-12 login_form ">
+			<h1 class = "company title">Search Records</h1>
+			<div class="row">
+				<form class="form-group" action="{% url 'search' %}" method="get">
+    				<input class="form__input" type="text" placeholder="Search by Name,PAN number,Age,Gender,City & Email" aria-label="Search" name="q" maxlength="200" >
+    				<button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="Search-btn">Search</button>
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!--
+<div class="row main-content text-center">
+		<div class="col-md-0 col-xs-4 col-sm-0">
+			<h1 class = "company title">Sort Records</h1>
+			<button class="btn btn-outline-success" type="button" id="Sort-name">Sort by Name</button>
+			 <button class="btn btn-outline-success" type="button" id="Sort-PAN">Sort by PAN</button>
+			 <button class="btn btn-outline-success" type="button" id="Sort-City">Sort by City</button>
+		</div>
+</div>
+-->
+ <div class="container-fluid">
+	<div class="row main-content bg-success text-center">
+		<div class="col-md-12 col-xs-12 col-sm-12 login_form ">
+			<table class="table" id="table1">
+			<tr>
+					<th scope ="col">Name</th>
+					<th scope ="col">PAN_number</th>
+					<th scope ="col">Age</th>
+					<th scope ="col">Gender</th>
+					<th scope ="col">Email</th>
+					<th scope ="col">City</th>
+				    <th scope="col">Action</th>
+			</tr>
+			{% for obj in results %}
+				<tr>
+					<th scope="row">{{obj.Name}}</th>
+					<td>{{obj.PAN_number}}</td>
+					<td>{{obj.Age}}</td>
+					<td>{{obj.Gender}}</td>
+					<td>{{obj.Email}}</td>
+					<td>{{obj.City}}</td>
+					<td>
+        				<a class = "btn  btn-danger"  href = "{% url 'delete' obj.id %}">Delete</a>
+					</td>
+				</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+ </div>
+
+
+
+</body>
+</html>
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Records</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<form method="POST" class="post-form">
+    {% csrf_token %}
+    <br>
+    <div class="form-group">
+        <label for="id_Name">Name:</label>
+        <input type="text" name="Name" maxlength="200" required="" id="id_Name">
+    <div>
+        <br><br>
+    <div class="form-group">
+        <label for="id_PAN_number">PAN number:</label>
+        <input type="text" name="PAN_number" maxlength="10" required="" id="id_PAN_number">
+    </div>
+        <br><br>
+
+        <label for="id_Age">Age:</label>
+        <input type="number" name="Age" min="0" required="" id="id_Age">
+
+        <br><br>
+
+        <label for="id_Gender">Gender:</label>
+        <input type="text" name="Gender" maxlength="100" required="" id="id_Gender">
+
+        <label for="id_Email">Email:</label>
+        <input type="email" name="Email" maxlength="254" required="" id="id_Email">
+
+        <br><br>
+
+        <label for="id_City">City:</label>
+        <input type="text" name="City" maxlength="100" required="" id="id_City">
+
+        <script>
+        $( function() {
+            var availableTags = [
+                {% for item in records %}
+                    "{{item.City}}",
+                {% endfor %}
+            ];
+            $( "#id_City" ).autocomplete({
+              source: availableTags
+            });
+        } );
+
+
+        </script>
+
+        <br>
+        <br>
+    <button type="submit" class="save btn btn-default">Save</button>
+
+    </form>
+</body>
+</html>-->

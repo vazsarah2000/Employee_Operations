@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Records</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!--
+<form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="get">
+    <input class="form-control mr-sm-2" type="text"   placeholder="Search by Name,PAN number,Age,Gender,City & Email" aria-label="Search" name="q" maxlength="200">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+-->
+
+<table class="table">
+<tr>
+	    <th scope ="col">Name</th>
+		<th scope ="col">PAN_number</th>
+		<th scope ="col">Age</th>
+		<th scope ="col">Gender</th>
+		<th scope ="col">Email</th>
+		<th scope ="col">City</th>
+</tr>
+{% for obj in results %}
+	<tr>
+	    <th scope="row">{{obj.Name}}</th>
+		<td>{{obj.PAN_number}}</td>
+		<td>{{obj.Age}}</td>
+		<td>{{obj.Gender}}</td>
+		<td>{{obj.Email}}</td>
+		<td>{{obj.City}}</td>
+	</tr>
+	{% endfor %}
+</table>
+</body>
+</html>
